@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>URL 输入</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body class="container mt-5">
+    <form id="url-form">
+        <div class="form-group">
+            <p>累积请求次数: {{ counter }}</p>
+
+            <label for="url">汽水音乐分享链接:</label>
+            <input type="text" id="url" name="url" required class="form-control">
+        </div>
+        <input type="submit" value="解析" class="btn btn-primary">
+    </form>
+    <div id="loader" class="mt-3" style="display: none;">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+        </div>
+    </div>
+    <div id="result" class="mt-3" style="display: none;">
+        <!-- 结果会被插入到这里 -->
+    </div>
+    <script>
+        $('#url-form').on('submit', function (e) {
+            e.preventDefault()
+            $('#loader').show()
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#loader').hide()
+                    $('#result').html(data).show()
+                }
+            })
+        });
+    </script>
+</body>
+
+</html>

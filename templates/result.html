@@ -1,0 +1,16 @@
+<div class="text-center">
+    {% if error %}
+    <h2 class="text-danger">{{ error }}</h2>
+    {% else %}
+
+    <h2 class="text-primary">歌曲名称：{{ song_title }}</h2>
+    <img src="{{ img_url }}" alt="歌曲封面" class="img-fluid mt-3">
+    <p class="mt-3">
+        <a href="{{ img_url }}" class="btn btn-success" rel="noreferrer">查看图片</a>
+    </p>
+    <p class="mt-3">
+        <a href="{{ song_url }}" class="btn btn-success" rel="noreferrer">查看音乐</a>
+    </p>
+    {% endif %}
+
+</div>
