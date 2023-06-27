@@ -86,7 +86,7 @@ def fetch_data(url):
         song_url = None
         if match:
             song_url = unquote(match.group(1)).replace(
-                "mp4", "mp3")
+                "mime_type=audio_mp4", "mime_type=audio_mp3")
         else:
             raise
 
