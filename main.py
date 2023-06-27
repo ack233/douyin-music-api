@@ -69,18 +69,24 @@ def fetch_data(url):
         img_url = song_cover[0] if song_cover else None
 
         # 用XPath获取<div class="title">的文本内容，即歌曲名称
-        song_title = tree.xpath('//div[@class="title"]/text()')[0]
 
+        song_title_list = tree.xpath('//div[@class="title"]/text()')
+        if not song_title_list:
+            song_title_list = tree.xpath(
+                '//div[@class="artist-name ellipse"]/text()')
+            if not song_title_list:
+                song_title_list = ['none']
+        song_title = song_title_list[0]
         # 用XPath获取<script id="RENDER_DATA" type="application/json">中的内容
         script_content = tree.xpath('//script[@id="RENDER_DATA"]')[0].text
         # 用正则截取https到songMaker中的字符串，返回第一个分组的匹配结果
-        pattern = r'(https.+btag%3.+[0-9]{3,}).+songMaker'
+        pattern = r'(https.+btag%3.+00028000).+'
         match = re.search(pattern, script_content)
 
         song_url = None
         if match:
             song_url = unquote(match.group(1)).replace(
-                "mime_type=audio_mp4", "mime_type=audio_mp3")
+                "mp4", "mp3")
         else:
             raise
 
