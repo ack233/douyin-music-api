@@ -80,7 +80,9 @@ def fetch_data(url):
         # 用XPath获取<script id="RENDER_DATA" type="application/json">中的内容
         script_content = tree.xpath('//script[@id="RENDER_DATA"]')[0].text
         # 用正则截取https到songMaker中的字符串，返回第一个分组的匹配结果
-        pattern = r'(https.+btag%3.+00028000).+'
+
+        pattern = r'(https.+btag%3.+[0-9]{3,}).+songMaker'
+
         match = re.search(pattern, script_content)
 
         song_url = None
@@ -88,7 +90,11 @@ def fetch_data(url):
             song_url = unquote(match.group(1)).replace(
                 "mime_type=audio_mp4", "mime_type=audio_mp3")
         else:
-            raise
+            pattern = r'(https.+btag%3D.{9}).+'
+            match = re.search(pattern, script_content)
+            if not match:
+                print(url)
+                raise
 
         # Render the result template with the fetched data
         return render_template('result.html', song_title=song_title, img_url=img_url, song_url=song_url)
